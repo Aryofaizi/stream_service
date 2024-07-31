@@ -8,6 +8,7 @@ django = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 djangorestframework = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
