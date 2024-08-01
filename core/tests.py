@@ -47,3 +47,27 @@ class CoreTest(TestCase):
         self.assertIn("access", response.json())
         
         
+        
+    def test_refresh_token(self):
+        """test for refresh token endpoint 
+        i.e. obtain an access token."""
+        
+        # First, obtain a refresh token from login endpoint
+        login_url = reverse("jwt-create")
+        login_payload = {
+            "username": self.USER_USERNAME,
+            "password": self.USER_PASSWORD,
+        }
+        login_response = self.client.post(path=login_url, data=login_payload, content_type="application/json")
+        refresh_token = login_response.json().get("refresh")
+
+        # Now, use the refresh token to obtain a new access token
+        url = reverse("jwt-refresh")
+        payload = {
+            "refresh" : refresh_token
+        }
+        response = self.client.post(path=url, data=payload, content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("access", response.json())
+        
+        
