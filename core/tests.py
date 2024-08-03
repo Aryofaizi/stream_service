@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from rest_framework import status
 
 
 class CoreTest(TestCase):
@@ -9,6 +10,7 @@ class CoreTest(TestCase):
         cls.USER_USERNAME = "test2"
         cls.USER_PASSWORD = "usertest1234"
         cls.USER_EMAIL = "test2@gmail.com"
+        cls.AUTH_TOKEN_PREFIX = "Token"
         
         cls.user = get_user_model().objects.create(
             username= cls.USER_USERNAME,
@@ -18,17 +20,14 @@ class CoreTest(TestCase):
         cls.user.save() # Save the user with the hashed password
         
     def setUp(self):
-        # First, obtain a refresh token from login endpoint
-        login_url = reverse("jwt-create")
-        login_payload = {
+        #register user to use the auth_Token
+        register_url = reverse("login")
+        register_payload = {
             "username": self.USER_USERNAME,
             "password": self.USER_PASSWORD,
         }
-        login_response = self.client.post(path=login_url, data=login_payload, content_type="application/json")
-        self.refresh_token = login_response.json().get("refresh")
-        self.access_token = login_response.json().get("access")
-        
-        
+        response = self.client.post(path=register_url, data=register_payload, content_type="application/json")
+        self.auth_token = response.json().get("auth_token")
     
     def test_register_user(self):
         """test for the register user endpoint
@@ -40,37 +39,34 @@ class CoreTest(TestCase):
             "email": "test@gmail.com",
         }
         response = self.client.post(path=url, data=payload, content_type="application/json")
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("username", response.json())
         self.assertIn("email", response.json())
         
         
     def test_login_user(self):
         """test for login user endpoint
-        i.e. obtain a jwt for existing user."""
-        url = reverse("jwt-create")
+        i.e. obtain a auth_token for existing user."""
+        url = reverse("login")
         payload = {
             "username": self.USER_USERNAME,
             "password": self.USER_PASSWORD,
         }
         response = self.client.post(path=url,data=payload, content_type="application/json")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("refresh", response.json())
-        self.assertIn("access", response.json())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("auth_token", response.json())
         
         
         
-    def test_refresh_token(self):
-        """test for refresh token endpoint 
-        i.e. obtain an access token."""
-
-        # Now, use the refresh token to obtain a new access token
-        url = reverse("jwt-refresh")
-        payload = {
-            "refresh" : self.refresh_token
+    def test_logout_user(self):
+        """test for logout user endpoint 
+        i.e. token destroy."""
+        url = reverse("logout")
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}",
         }
-        response = self.client.post(path=url, data=payload, content_type="application/json")
-        self.assertEqual(response.status_code, 200)
-        self.assertIn("access", response.json())
+        response = self.client.post(path=url,content_type="application/json",
+                                    headers=headers)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         
         
