@@ -7,3 +7,12 @@ class ContentSerializer(serializers.ModelSerializer):
         model = models.Content
         fields = ["title", "description", "release_date",
                   "genre", "category", "rate","price"]
+        
+        
+        
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Comment
+        fields = ["user", "content", "text", "status",
+                  "rate", "datetime_created", "datetime_modified"]
+        read_only_fields = ["status", "user", "content"]
