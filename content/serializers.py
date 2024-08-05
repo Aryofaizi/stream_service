@@ -2,7 +2,13 @@ from rest_framework import serializers
 from . import models
 
 
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Genre
+        fields = ["title"]
+
 class ContentSerializer(serializers.ModelSerializer):
+    genre = GenreSerializer(many=True)
     class Meta:
         model = models.Content
         fields = ["title", "description", "release_date",

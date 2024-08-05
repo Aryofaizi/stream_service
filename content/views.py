@@ -8,7 +8,7 @@ from rest_framework import permissions
 
 class ContentViewSet(ModelViewSet):
     serializer_class = serializers.ContentSerializer
-    queryset = models.Content.objects.all()
+    queryset = models.Content.objects.all().prefetch_related("genre")
     permission_classes = [IsAdminOrReadOnly]
 
 
