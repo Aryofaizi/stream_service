@@ -16,6 +16,10 @@ class ContentViewSet(ModelViewSet):
 class CommentViewSet(ModelViewSet):
     serializer_class = serializers.CommentSerializer
     permission_classes = [IsOwner]
+    
+    
     def get_queryset(self):
-        return models.Comment.objects.filter(content_id =self.kwargs.get("content_pk"))
+        return models.Comment.objects.filter(
+            content_id =self.kwargs.get("content_pk")
+            ).select_related("user")
     
