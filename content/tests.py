@@ -94,3 +94,26 @@ class ContentTest(AuthMixin,TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         
     
+    def test_content_update(self):
+        """Tests the update process of specified content."""
+        url = reverse('content-detail', kwargs={'pk': 1})
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}",
+        }
+        payload = {
+            "title": "Moana edited title",
+            "description": "edited description",
+            "release_date": "2016-11-14",
+            "genre": [
+                {
+                    "title": "Animated"
+                }
+            ],
+            "category": "ANI",
+            "rate": "5",
+            "price": 12000
+        }
+        response = self.client.patch(path=url, data=payload,
+                                     content_type="application/json", headers=headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
