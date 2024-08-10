@@ -20,7 +20,7 @@ class CommentViewSet(ModelViewSet):
     
     def get_queryset(self):
         return models.Comment.objects.filter(
-            content_id =self.kwargs.get("content_pk")
+            content_id =self.kwargs.get("content_pk"), status=models.Comment.STATUS_APPROVED
             ).select_related("user")
     
     def get_serializer_context(self):
