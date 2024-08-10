@@ -81,3 +81,16 @@ class ContentTest(AuthMixin,TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("id", response.json())
         self.assertIn("title", response.json())
+        
+        
+
+    def test_content_delete(self):
+        """Tests the delete process of specified content."""
+        url = reverse('content-detail', kwargs={'pk': 1})
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}",
+        }
+        response = self.client.delete(path=url, headers=headers)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        
+    
