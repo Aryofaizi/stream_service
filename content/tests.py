@@ -92,7 +92,7 @@ class ContentTest(AuthMixin,TestCase):
         }
         response = self.client.delete(path=url, headers=headers)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        
+        self.assertEqual(Content.objects.count(), 0)
     
     def test_content_update(self):
         """Tests the update process of specified content."""
