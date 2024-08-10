@@ -56,13 +56,13 @@ class Content(models.Model):
     
     
 class Comment(models.Model):
-    STATUS_APPROVED ="approved"
-    STATUS_NOT_APPROVED = "not-approved"
-    STATUS_WAITING = "waiting"
+    STATUS_APPROVED ="a"
+    STATUS_NOT_APPROVED = "na"
+    STATUS_WAITING = "w"
     STATUS_CHOICES = [
-        ("a", STATUS_APPROVED),
-        ("na", STATUS_NOT_APPROVED),
-        ('w', STATUS_WAITING),
+        ("a", "approved"),
+        ("na", "not-approved"),
+        ('w', "waiting"),
     ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.ForeignKey(Content, on_delete=models.CASCADE)

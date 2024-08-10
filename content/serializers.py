@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from . import models
 from core.models import CustomUser
+from django.shortcuts import get_object_or_404
+from .models import Content
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -57,9 +59,19 @@ class CustomUserSerializer(serializers.ModelSerializer):
         read_only_fields = ["username"]
         
 class CommentSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
+    user = CustomUserSerializer(read_only=True)
     class Meta:
         model = models.Comment
         fields = ["user", "content", "text", "status",
                   "rate", "datetime_created", "datetime_modified"]
         read_only_fields = ["status", "user", "content"]
+        
+    def create(self, validated_data):
+        user = get_object_or_404(CustomUser, id=self.context.get("user_id"))
+        content = get_object_or_404(Content, id=self.context.get("content_pk"))
+        comment = models.Comment.objects.create(user=user, content=content,
+                                                **validated_data)
+        print(comment)
+        comment.save()
+        return comment
+        

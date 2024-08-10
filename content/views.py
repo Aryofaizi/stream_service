@@ -23,3 +23,7 @@ class CommentViewSet(ModelViewSet):
             content_id =self.kwargs.get("content_pk")
             ).select_related("user")
     
+    def get_serializer_context(self):
+        context = {"user_id": self.request.user.id,
+                   "content_pk": self.kwargs.get("content_pk")}
+        return context
