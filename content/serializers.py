@@ -64,7 +64,8 @@ class CommentSerializer(serializers.ModelSerializer):
         model = models.Comment
         fields = ["user", "content", "text", "status",
                   "rate", "datetime_created", "datetime_modified"]
-        read_only_fields = ["status", "user", "content"]
+        read_only_fields = ["status", "user", "content",
+                            "datetime_created", "datetime_modified"]
         
     def create(self, validated_data):
         user = get_object_or_404(CustomUser, id=self.context.get("user_id"))
