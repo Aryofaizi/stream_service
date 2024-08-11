@@ -156,3 +156,16 @@ class ContentTest(AuthMixin,TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("text", response.json())
         self.assertIn("rate", response.json())
+        
+        
+    def test_comment_delete(self):
+        """Tests if the comment speicified with the id would get deleted."""
+        url = reverse("content-comment-detail",kwargs={"content_pk":self.content.id, "pk":self.comment.id})
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}"
+        }
+        response = self.client.delete(path=url, headers=headers)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Comment.objects.count(), 0)
+        
+      
