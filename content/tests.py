@@ -18,26 +18,17 @@ class ContentTest(AuthMixin,TestCase):
         )
         cls.genre.save()
         
-        
-        url_create = reverse("content-list")
-        payload_create = {
-            "title": "blind spot",
-            "description": "Blindspot is an American crime drama television series, created by Martin Gero, about a mysterious, heavily tattooed woman with no recollection of her past or identity.[1][2] It stars Sullivan Stapleton and Jaimie Alexander. Rob Brown, Audrey Esparza, Ashley Johnson, Ukweli Roach and Marianne Jean-Baptiste co-star.[3] Archie Panjabi, Luke Mitchell, Michelle Hurd, Ennis Esmer and Mary Elizabeth Mastrantonio joined the main cast in later seasons. The Warner Bros. Television-produced series premiered September 21, 2015, on NBC. On May 10, 2019, NBC renewed the series for a fifth and final season,[4] which aired from May 7[5] to July 23, 2020.",
-            "release_date": "2015-09-21",
-            "genre": [
-                {
-                    "title": "Animated"
-                }
-            ],
-            "category": "TVS",
-            "rate": "5",
-            "price": 12001
-        }
-        headers_create = {
-            "Authorization": f"{cls.AUTH_TOKEN_PREFIX} {cls.auth_token}",
-        }
-        cls.response = cls.client.post(path=url_create, data=payload_create, format="json", headers=headers_create)
-        
+        cls.content = Content.objects.create(
+            title= "blind spot",
+            description= "Blindspot is an American crime drama television series",
+            release_date= "2015-09-21",
+            category= "TVS",
+            rate= "5",
+            price= 12001,
+        )
+        cls.content.genre.add(cls.genre)
+        cls.content.save()        
+           
         
     def test_content_create(self):
         """Tests the POST request to create a new content."""        
