@@ -168,4 +168,20 @@ class ContentTest(AuthMixin,TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Comment.objects.count(), 0)
         
-      
+    
+    
+    def test_comment_update(self):
+        """Tests if the comment speicified with the id would get updated with new value."""
+        url = reverse("content-comment-detail",kwargs={"content_pk":self.content.id, "pk":self.comment.id})
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}"
+        }
+        payload = {
+            "text": "this is the updated text for this comment",
+            "rate": 5
+        }
+        response = self.client.patch(path=url, data=payload, headers=headers,
+                                     content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn(payload.get("text"), response.json().get("text"))  
+        
