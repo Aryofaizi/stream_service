@@ -27,7 +27,18 @@ class ContentTest(AuthMixin,TestCase):
             price= 12001,
         )
         cls.content.genre.add(cls.genre)
-        cls.content.save()        
+        cls.content.save()    
+        
+        cls.comment = Comment.objects.create(
+            user_id = cls.user.id,
+            content = cls.content,
+            text = "test comment",
+            rate = 5,
+            status = "a",
+        )
+        cls.comment.save()        
+        
+      
            
         
     def test_content_create(self):
@@ -133,3 +144,15 @@ class ContentTest(AuthMixin,TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
         
+
+    def test_comment_detail(self):
+        """Tests comment Detail, checks if the endpoint returns the
+        specified comment and status code:200"""
+        url = reverse("content-comment-detail",kwargs={"content_pk":self.content.id, "pk":self.comment.id})
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}"
+        }
+        response = self.client.get(path=url, headers=headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("text", response.json())
+        self.assertIn("rate", response.json())
