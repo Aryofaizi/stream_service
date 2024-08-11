@@ -72,7 +72,6 @@ class CommentSerializer(serializers.ModelSerializer):
         content = get_object_or_404(Content, id=self.context.get("content_pk"))
         comment = models.Comment.objects.create(user=user, content=content,
                                                 **validated_data)
-        print(comment)
         comment.save()
         return comment
         

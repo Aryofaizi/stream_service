@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from config.tests import AuthMixin
-from .models import Genre, Content
+from .models import Genre, Content,Comment
 
 class ContentTest(AuthMixin,TestCase):
     """Tests for Content app."""
@@ -116,4 +116,29 @@ class ContentTest(AuthMixin,TestCase):
         response = self.client.patch(path=url, data=payload,
                                      content_type="application/json", headers=headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
+        
+    def test_comment_list(self):
+        """Tests comment list, the endpoint must return
+        the list of all approved comments."""
+        url = reverse("content-comment-list", kwargs={"content_pk":1})
+        response = self.client.get(path=url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
+    def test_comment_create(self):
+        """Tests comment list, the endpoint must return
+        the list of all approved comments."""
+        url = reverse("content-comment-list", kwargs={"content_pk":1})
+        payload = {
+            "text":"test comment text!",
+            "rate":5
+        }
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}"
+        }
+        response = self.client.post(path=url, data=payload, headers=headers)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
         
