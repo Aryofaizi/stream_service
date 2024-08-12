@@ -5,19 +5,20 @@ from . import models
 from .permissions import IsAdminOrReadOnly, IsOwner
 from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 
 
 class ContentViewSet(ModelViewSet):
     serializer_class = serializers.ContentSerializer
     queryset = models.Content.objects.all().prefetch_related("genre")
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ["title", "genre", "release_date", "category", "rate"]
     # optional ordering fields
     ordering_fields = ["rate"]
     #default value of ordering 
     ordering = ["-datetime_created"]
+    search_fields = ['title']
 
 
 
