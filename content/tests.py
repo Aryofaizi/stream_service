@@ -72,8 +72,8 @@ class ContentTest(AuthMixin,TestCase):
         url = reverse("content-list")
         response = self.client.get(path=url, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("id", response.json()[0]) # because it returns list and the dict is nested
-        self.assertIn("title", response.json()[0])
+        self.assertIn("id", response.json().get("results")[0]) # because it returns list and the dict is nested
+        self.assertIn("title", response.json().get("results")[0])
     
     
     def test_contents_detail(self):

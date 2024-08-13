@@ -6,7 +6,7 @@ from .permissions import IsAdminOrReadOnly, IsOwner
 from rest_framework import permissions
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
-
+from .paginations import ContentPagination
 
 class ContentViewSet(ModelViewSet):
     serializer_class = serializers.ContentSerializer
@@ -19,6 +19,7 @@ class ContentViewSet(ModelViewSet):
     #default value of ordering 
     ordering = ["-datetime_created"]
     search_fields = ['title']
+    pagination_class = ContentPagination
 
 
 
