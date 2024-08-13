@@ -23,4 +23,5 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
     path("", include("content.urls")),
+    path("cart/", include("cart.urls")),
 ] + debug_toolbar_urls()
