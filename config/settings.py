@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     #local
     "core",
     "content",
+    "cart",
 ]
 
 MIDDLEWARE = [
