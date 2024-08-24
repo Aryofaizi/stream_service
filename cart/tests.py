@@ -34,3 +34,9 @@ class CartTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         
 
+    def test_cart_item_list(self):
+        """Tests the endpoint to retrieve the
+        list of items for the specified cart."""
+        url = reverse("cart-item-list", kwargs={"cart_pk": self.cart.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

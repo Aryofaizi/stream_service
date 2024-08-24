@@ -6,6 +6,6 @@ router = DefaultRouter()
 router.register("", views.CartViewSet, basename="cart")
 
 cart_item_router = NestedDefaultRouter(router, "", lookup="cart")
-cart_item_router.register("items", views.CartItemViewSet, "cart_item")
+cart_item_router.register("items", views.CartItemViewSet, basename="cart-item")
 
 urlpatterns = router.urls + cart_item_router.urls
