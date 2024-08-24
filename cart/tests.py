@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from .models import Cart
-
+from content.models import Content, Genre
 
 class CartTest(TestCase):
     """tests for the cart app."""
@@ -11,6 +11,25 @@ class CartTest(TestCase):
     def setUpTestData(cls):
         cls.cart = Cart.objects.create()
         cls.cart.save()
+        
+        # use ContentTest instance to make a content
+        cls.genre = Genre.objects.create(
+            title = "Animated",
+            description = """A film medium in which the film's images
+            are primarily created by computer or hand and the characters are voiced by actors.""",
+        )
+        cls.genre.save()
+        
+        cls.content = Content.objects.create(
+            title= "blind spot",
+            description= "Blindspot is an American crime drama television series",
+            release_date= "2015-09-21",
+            category= "TVS",
+            rate= "5",
+            price= 12001,
+        )
+        cls.content.genre.add(cls.genre)
+        cls.content.save()    
         
     
     def test_cart_create(self):
@@ -40,3 +59,15 @@ class CartTest(TestCase):
         url = reverse("cart-item-list", kwargs={"cart_pk": self.cart.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
+    def test_cart_item_create(self):
+        """Tests if the creat cartitem endpoint
+        returns 201 status code. """
+        url = reverse("cart-item-list", kwargs={"cart_pk":self.cart.id})
+        payload = {
+            "content": self.content.id
+        }
+        response = self.client.post(url, data=payload, content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
