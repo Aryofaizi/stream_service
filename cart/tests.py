@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from .models import Cart
+from .models import Cart, CartItem
 from content.models import Content, Genre
 
 class CartTest(TestCase):
@@ -31,6 +31,9 @@ class CartTest(TestCase):
         cls.content.genre.add(cls.genre)
         cls.content.save()    
         
+        
+        cls.cart_item = CartItem.objects.create(cart=cls.cart, content=cls.content)
+        cls.cart_item.save()
     
     def test_cart_create(self):
         """Tests if the creat cart endpoint returns 201 status code."""
@@ -62,12 +65,25 @@ class CartTest(TestCase):
         
         
     def test_cart_item_create(self):
-        """Tests if the creat cartitem endpoint
-        returns 201 status code. """
-        url = reverse("cart-item-list", kwargs={"cart_pk":self.cart.id})
+        """Tests if the creat cartitem endpoint returns 201 status code. """
+        cart = Cart.objects.create()
+        cart.save()
+        url = reverse("cart-item-list", kwargs={"cart_pk":cart.id})
         payload = {
             "content": self.content.id
         }
         response = self.client.post(url, data=payload, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
+        
+    def test_cart_item_detail(self):
+        """Tests cart item Detail, checks if the endpoint returns the
+        specified cart item and status code:200"""
+        url = reverse("cart-item-detail", kwargs={
+            "cart_pk": self.cart.id,
+            "pk": self.cart_item.id
+            })
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    
