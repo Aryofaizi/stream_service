@@ -78,7 +78,7 @@ class ContentTest(AuthMixin,TestCase):
     
     def test_contents_detail(self):
         """test if retrieves the details of a specific content by its ID. """
-        url = reverse('content-detail', kwargs={'pk': 1})
+        url = reverse('content-detail', kwargs={'pk': self.content.id})
         response = self.client.get(path=url, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("id", response.json())
@@ -88,7 +88,7 @@ class ContentTest(AuthMixin,TestCase):
 
     def test_content_delete(self):
         """Tests the delete process of specified content."""
-        url = reverse('content-detail', kwargs={'pk': 1})
+        url = reverse('content-detail', kwargs={'pk': self.content.id})
         headers = {
             "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}",
         }
@@ -98,7 +98,7 @@ class ContentTest(AuthMixin,TestCase):
     
     def test_content_update(self):
         """Tests the update process of specified content."""
-        url = reverse('content-detail', kwargs={'pk': 1})
+        url = reverse('content-detail', kwargs={'pk': self.content.id})
         headers = {
             "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}",
         }
@@ -130,9 +130,9 @@ class ContentTest(AuthMixin,TestCase):
         
         
     def test_comment_create(self):
-        """Tests comment list, the endpoint must return
-        the list of all approved comments."""
-        url = reverse("content-comment-list", kwargs={"content_pk":1})
+        """Tests comment create, the endpoint must create
+        a new comment."""
+        url = reverse("content-comment-list", kwargs={"content_pk":self.content.id})
         payload = {
             "text":"test comment text!",
             "rate":5
@@ -140,7 +140,7 @@ class ContentTest(AuthMixin,TestCase):
         headers = {
             "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}"
         }
-        response = self.client.post(path=url, data=payload, headers=headers)
+        response = self.client.post(path=url, data=payload, headers=headers, content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
         
