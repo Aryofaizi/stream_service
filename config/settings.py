@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "core",
     "content",
     "cart",
+    "order",
 ]
 
 MIDDLEWARE = [
