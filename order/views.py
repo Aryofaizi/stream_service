@@ -1,3 +1,15 @@
 from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet 
+from .models import Order
+from .serializers import OrderSerializer
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
+
+class OrderViewSet(ModelViewSet):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    permission_classes = [IsAuthenticated]
+    
+    def get_serializer_context(self):
+        context = {"user" : self.request.user}
+        return context
