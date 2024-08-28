@@ -8,8 +8,11 @@ from rest_framework.permissions import IsAuthenticated
 class OrderViewSet(ModelViewSet):
     http_method_names = ["get", "post", "delete", "options", "head"]
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
     permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Order.objects.filter(
+            user=self.request.user).prefetch_related("items")
     
     def get_serializer_context(self):
         context = {"user" : self.request.user}
