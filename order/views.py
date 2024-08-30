@@ -25,4 +25,8 @@ class OrderViewSet(ModelViewSet):
 
 class OrderItemViewSet(ModelViewSet):
     serializer_class = OrderItemSerializer
-    queryset = OrderItem.objects.all()
+    
+    
+    def get_queryset(self):
+        order_id = self.kwargs["order_pk"]
+        return OrderItem.objects.filter(order=order_id).prefetch_related("content__genre")
