@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet 
 from .models import Order, OrderItem
-from .serializers import OrderSerializer
+from .serializers import OrderSerializer, OrderItemSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Prefetch
 
@@ -20,3 +20,9 @@ class OrderViewSet(ModelViewSet):
     def get_serializer_context(self):
         context = {"user" : self.request.user}
         return context
+
+
+
+class OrderItemViewSet(ModelViewSet):
+    serializer_class = OrderItemSerializer
+    queryset = OrderItem.objects.all()
