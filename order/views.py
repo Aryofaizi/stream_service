@@ -7,7 +7,7 @@ from django.db.models import Prefetch
 
 
 class OrderViewSet(ModelViewSet):
-    http_method_names = ["get", "post", "delete", "options", "head"]
+    http_method_names = ["get", "post", "options", "head"]
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     
