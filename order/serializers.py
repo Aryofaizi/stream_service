@@ -1,7 +1,23 @@
 from rest_framework import serializers
 from .models import Order, OrderItem
 from content.serializers import ContentSerializer
+from content.models import Content
 
+
+
+class AddOrderItemSerilizer(serializers.ModelSerializer):
+    content = serializers.PrimaryKeyRelatedField(queryset=Content.objects.all())
+    class Meta: 
+        model = OrderItem
+        fields = ["content", "unit_price"]
+        
+    def create(self, validated_data):
+        order = Order.objects.get(pk=self.context.get("order_id"))
+        order_item = OrderItem.objects.create(
+            order = order, **validated_data
+        )
+        order_item.save()
+        return order_item
 
 class OrderItemSerializer(serializers.ModelSerializer):
     content = ContentSerializer()
