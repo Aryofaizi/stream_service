@@ -98,3 +98,12 @@ class OrderTest(AuthMixin, TestCase):
         })
         response = self.client.get(path=url, headers=self.headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_order_item_delete(self):
+        """test order item delete endpoint."""
+        url = reverse("order-item-detail", kwargs={
+            "order_pk":self.order.id,
+            "pk": self.order_item.id
+        })
+        response = self.client.delete(path=url, headers=self.headers)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
