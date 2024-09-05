@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from config.tests import AuthMixin
 from rest_framework import status
+from .models import Order
 
 class OrderTest(AuthMixin, TestCase):
     """A test class for order app."""
@@ -10,6 +11,8 @@ class OrderTest(AuthMixin, TestCase):
         self.headers ={
             "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}",
         }
+        
+        self.order = Order.objects.create(user=self.user)
     
     def test_order_list(self):
         """test order list endpoint."""
@@ -24,3 +27,9 @@ class OrderTest(AuthMixin, TestCase):
         response = self.client.post(path=url, headers=self.headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
+        
+    def test_order_detail(self):
+        """test order detail endpoint"""
+        url = reverse("order-detail", kwargs={'pk': self.order.id})
+        response = self.client.get(path=url, headers=self.headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
