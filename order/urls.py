@@ -4,7 +4,7 @@ from rest_framework_nested.routers import NestedDefaultRouter
 
 
 router = routers.DefaultRouter()
-router.register("", OrderViewSet, "orders")
+router.register("", OrderViewSet, "order")
 order_item_router = NestedDefaultRouter(router, "", lookup="order")
 order_item_router.register("items", OrderItemViewSet, basename="order-item")
 
