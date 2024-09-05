@@ -33,3 +33,11 @@ class OrderTest(AuthMixin, TestCase):
         url = reverse("order-detail", kwargs={'pk': self.order.id})
         response = self.client.get(path=url, headers=self.headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        
+        
+    def test_order_item_list(self):
+        """test order item list endpoint."""
+        url = reverse("order-item-list",kwargs={"order_pk":self.order.id})
+        response = self.client.get(url, headers=self.headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
