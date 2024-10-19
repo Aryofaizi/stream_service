@@ -70,3 +70,12 @@ class CoreTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         
         
+    def test_user_me(self):
+        """test for auth/user/me endpoint the user detail page."""
+        url = reverse("customuser-me")
+        headers = {
+            "Authorization": f"{self.AUTH_TOKEN_PREFIX} {self.auth_token}",
+        }
+        response = self.client.get(path=url,content_type="application/json",
+                                headers=headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
