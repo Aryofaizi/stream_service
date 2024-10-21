@@ -25,4 +25,5 @@ urlpatterns = [
     path("", include("content.urls")),
     path("carts/", include("cart.urls")),
     path("orders/", include("order.urls")),
+    path("subscriptionplans/", include("subscription.urls")),
 ] + debug_toolbar_urls()
