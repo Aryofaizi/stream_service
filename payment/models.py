@@ -13,5 +13,5 @@ class Payment(models.Model):
     datetime_modified = models.DateTimeField(auto_now=True)
     zarinpal_authority = models.CharField(max_length=255, blank=True)
     zarinpal_ref_id = models.CharField(max_length=150, blank=True)
-    zarinapl_data = models.TextField(blank=True)
+    zarinpal_data = models.TextField(blank=True)
     has_been_sent  = models.BooleanField(default=False)
