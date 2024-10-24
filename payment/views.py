@@ -3,6 +3,7 @@ from subscription.models import SubscriptionPlan
 from . import models
 import requests
 from django.http import HttpResponse
+from subscription.models import UserSubscription
 
 def payment_request(request, pk):
     plan = get_object_or_404(SubscriptionPlan, pk=pk)
@@ -61,6 +62,10 @@ def payment_verify(request):
                 payment.zarinpal_ref_id = response_data["ref_id"]
                 payment.zarinpal_data = response_data
                 payment.save()
+                # make plan available for user
+                user_plan = UserSubscription.objects.create(user=request.user, plan=payment.plan)
+                user_plan.save()
+                
                 return HttpResponse(""" order payed succesffully
                     thanks for you attention your order will be sent soon
                     """)
