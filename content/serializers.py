@@ -8,13 +8,19 @@ class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Genre
         fields = ["title"]
+        
+class VideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Video
+        fields = ["content", "file"]
 
 class ContentSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(many=True)
+    videos = VideoSerializer(many=True)
     class Meta:
         model = models.Content
         fields = ["id", "title", "description", "release_date",
-                  "genre", "category", "rate","price"]
+                  "genre", "category", "rate","price", "videos"]
         
     def create(self, validated_data):
         genre_list = validated_data.pop("genre")

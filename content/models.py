@@ -73,5 +73,20 @@ class Comment(models.Model):
     datetime_modified = models.DateTimeField(auto_now=True)
     
     
+
+class Video(models.Model):
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name="videos")
+    file = models.FileField(upload_to="videos", max_length=255)
+    
+    def __str__(self) -> str:
+        return self.content.title
+    
+
+class Subtitle(models.Model):
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="subtitles")
+    language = models.CharField(max_length=10)  # Use language codes like "en", "fr"
+    file = models.FileField(upload_to="subtitles")
     
     
+    def __str__(self) -> str:
+        return f"{self.video.content.title} subtitle"
