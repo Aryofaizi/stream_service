@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 
 class Rate(models.TextChoices):
@@ -52,6 +53,10 @@ class Content(models.Model):
     def __str__(self):
         """Return content title."""
         return self.title
+    
+    
+    def get_absolute_url(self):
+        return reverse("content_detail", kwargs={"pk": self.pk})
     
     
     
