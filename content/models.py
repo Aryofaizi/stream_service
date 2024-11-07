@@ -25,10 +25,14 @@ class Category(models.TextChoices):
     VARIETY_SHOW = 'VAR', 'Variety Show'
 
 class Genre(models.Model):
+    tmdb_id = models.IntegerField(null=True, blank=True, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        unique_together = [["title", "tmdb_id"]]
     
     def __str__(self):
         """Return genre title."""
