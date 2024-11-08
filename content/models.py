@@ -39,6 +39,7 @@ class Genre(models.Model):
         return self.title
 
 class Content(models.Model):
+    tmdb_id = models.IntegerField(null=True, blank=True, unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     release_date = models.DateField()
@@ -48,8 +49,8 @@ class Content(models.Model):
         choices=Category.choices,
         default=Category.MOVIE,
     )
-    rate = models.CharField(choices=Rate.choices, max_length=16)
-    price = models.PositiveIntegerField()
+    rate = models.CharField(choices=Rate.choices, max_length=16, null=True, blank=True)
+    price = models.PositiveIntegerField(null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
     
