@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'djoser',
     "debug_toolbar",
     'django_filters',
+    'django_crontab',
     #local
     "core",
     "content",
@@ -169,3 +170,9 @@ AUTH_USER_MODEL = "core.CustomUser"
 # media settings
 MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
+
+
+# cron jobs settings
+CRONJOBS = [
+    ('0 0 * * *', 'django.core.management.call_command', ['fetch_tmdb_data'])
+]
