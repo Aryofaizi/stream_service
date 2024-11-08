@@ -39,11 +39,11 @@ def fetch_tmdb_data():
     
     
     
-def populate_content_table(request):
+def populate_content_table():
     """fetch tmdb movies and populate content table in database."""
     # Importing class inside the function ensures lazy loading
     from content.models import Content,Genre
-
+    logger = logging.getLogger(__name__)
     url = "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1"
 
     headers = {
@@ -74,4 +74,5 @@ def populate_content_table(request):
         if content:
             genre_ids = item.get("genre_ids", [])
             content.genre.add(*[genre_map[genre] for genre in genre_ids])
-    
+            
+    logger.info(f"Created {len(new_contents)} contents.")
