@@ -17,6 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from debug_toolbar.toolbar import debug_toolbar_urls
+from django.contrib.sitemaps.views import sitemap
+from content.v2.sitemaps import ContentSitemap
+
+
+#sitemaps configuration
+sitemaps = {
+    "content": ContentSitemap,
+}
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +37,5 @@ urlpatterns = [
     path("subscriptionplans/", include("subscription.urls")),
     path("payment/", include("payment.urls")),
     path("core/", include("core.urls")),
+    path("sitemap.xml", sitemap, {"sitemaps":sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
 ] + debug_toolbar_urls()

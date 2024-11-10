@@ -61,7 +61,9 @@ class Content(models.Model):
     
     
     def get_absolute_url(self):
-        return reverse("content_detail", kwargs={"pk": self.pk})
+        # return reverse("content_detail", kwargs={"pk": self.pk})
+        # switched to manually because the default router restframework generates the urls like lazy classes and that caused NoReverseMatch error.
+        return reverse('content-list') + f'{self.pk}/'
     
     
     
