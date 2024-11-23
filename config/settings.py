@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'django_filters',
     'django_crontab',
+    'django_elasticsearch_dsl',
     #local
     "core",
     "content",
@@ -177,3 +178,12 @@ MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 CRONJOBS = [
     ('0 0 * * *', 'django.core.management.call_command', ['fetch_tmdb_data'])
 ]
+
+
+# elasticsearch settings
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'http://localhost:9200',  # This should match your ElasticSearch server's host and port with 'http://' scheme
+    }
+}
+

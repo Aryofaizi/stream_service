@@ -35,6 +35,8 @@ drf-nested-routers = "*"
 django-filter = "*"
 django-crontab = "*"
 apscheduler = "*"
+elasticsearch = "*"
+django-elasticsearch-dsl = "*"
 
 [dev-packages]
 
