@@ -1,1 +1,2 @@
-readme is not created yet!
+Prerequisites: 
+Running ElasticSearch (via Docker or direct installation).
