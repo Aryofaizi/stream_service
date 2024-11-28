@@ -8,3 +8,4 @@ class ContentConfig(AppConfig):
     
     def ready(self):
         tasks.start()
+        from .v2 import signals  #load signals module when the app starts.
