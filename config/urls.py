@@ -19,7 +19,7 @@ from django.urls import path, include
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib.sitemaps.views import sitemap
 from content.v2.sitemaps import ContentSitemap
-
+from content.v2.views import search_content
 
 #sitemaps configuration
 sitemaps = {
@@ -38,4 +38,5 @@ urlpatterns = [
     path("payment/", include("payment.urls")),
     path("core/", include("core.urls")),
     path("sitemap.xml", sitemap, {"sitemaps":sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    path("search/", view=search_content, name="search_content"),
 ] + debug_toolbar_urls()
