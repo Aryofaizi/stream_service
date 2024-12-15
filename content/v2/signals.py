@@ -11,5 +11,7 @@ def index_content_to_elasticsearch(sender, instance, **kwargs):
         meta={"id": instance.id}, # Use MySQL primary key as document ID
         title=instance.title,
         description=instance.description,
+        category=instance.category,
+        release_date=instance.release_date,
     )
     content_document.save()
